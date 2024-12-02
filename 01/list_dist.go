@@ -17,6 +17,7 @@ func check(e error) {
 func main() {
 
 	var l1, l2 []int
+	var n int // Number of elements
 
 	f, err := os.Open("aoc_01_input.txt")
 	check(err)
@@ -34,16 +35,51 @@ func main() {
 
 		l1 = append(l1, n1)
 		l2 = append(l2, n2)
-
+		n++
 	}
 	l1 = quickSortStart(l1)
 	l2 = quickSortStart(l2)
 	dist := 0
 
+	//compute distance
+
 	for i, _ := range l1 {
 		dist += Abs(l1[i], l2[i])
 	}
-	fmt.Println(dist)
+
+	// Compute similarity
+	/*
+			- Take the first number in list 1, look for the first ocurrence in list 2, and count until the number changes.
+			- multiply the number in list 1 by the ocurrences count
+			- Go back to list 1 if the number is the same multiply by the same ocurrences if not go back to step 1
+		This works because the lists are ordered
+	*/
+	prev := l1[0] - 1
+	loc_l2 := 0 // initial location list 2
+	similarity := 0
+	curr_count := 0
+
+	for _, a := range l1 {
+		if a != prev {
+			curr_count = 0
+			// look for the first ocurrence of a in l2
+			for loc_l2 < n && a > l2[loc_l2] {
+				loc_l2++
+			}
+			// The order in the for condition is important 
+			// or you'll get out of bounds error
+			for i := loc_l2; i < n && a == l2[i]; i++ {
+				curr_count++
+			}
+			loc_l2 += curr_count
+		}
+
+		similarity += a * curr_count
+		prev = a
+	}
+
+	fmt.Println("Distance: ", dist)
+	fmt.Println("Similarity: ", similarity)
 	f.Close()
 }
 
