@@ -49,9 +49,9 @@ func main() {
 
 	// Compute similarity
 	/*
-			- Take the first number in list 1, look for the first ocurrence in list 2, and count until the number changes.
-			- multiply the number in list 1 by the ocurrences count
-			- Go back to list 1 if the number is the same multiply by the same ocurrences if not go back to step 1
+		- Take the first number in list 1, look for the first ocurrence in list 2, and count until the number changes.
+		- multiply the number in list 1 by the ocurrences count
+		- Go back to list 1 if the number is the same multiply by the same ocurrences if not go back to step 1
 		This works because the lists are ordered
 	*/
 	prev := l1[0] - 1
